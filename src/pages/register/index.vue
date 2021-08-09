@@ -1,7 +1,14 @@
 <template>
     <div class='register'>
-      <van-uploader :after-read="afterRead" />
-        <img :src="imgUrl" width="50%" alt="">
+      <van-uploader v-model="fileList" 
+      :deletable="false"
+      :max-count="1"
+      :after-read="afterRead" 
+      />
+
+      
+       <!-- <input type="file" @change="update" /> <br /> -->
+        <!-- <img :src="imgUrl" width="50%" alt=""> -->
         <van-form @submit="onSubmit">
   <van-field
     v-model="username"
@@ -36,7 +43,7 @@
 <script>
 
 // import { Toast } from 'vant';//是个方法不是组件
-
+import {post} from '../../util/requiest'
 import {regApi} from '../../api/user'
 export default {
     
@@ -44,6 +51,7 @@ export default {
     data() {
         
         return {
+          fileList: [],
             username: '',
             password: '',
             nickname:'',
@@ -70,14 +78,35 @@ export default {
         }
       }else{
           this.$toast.fail('请上传头像');
-      }
-    
+      }    
     },
-    afterRead(file) {
+    // update(){
+
+    // },
+     async afterRead(e) {
+        let params = new FormData(); //创建formdata对象
+      params.append("file", e.file);
+         let config = {
+        headers: {
+          "Content-Type": "multipart/form-data", //指明图片上传格式
+        },
+      };
+      // let params=e.file
       // 此时可以自行将文件上传至服务器
-    //   console.log(file);
-    this.imgUrl=file.content
+      console.log(e);
+    this.imgUrl=e.content
+     const result = await post("/api/v1/common/file_upload", params, config);
+      console.log(result);
+      if (result.data.code === "success") {
+        this.imgUrl = "http://localhost:3009" + result.data.info;
+        this.fileList.push(this.imgUrl)
+        if(this.fileList.length>1){
+          this.fileList.pop()
+        }
+      }
     },
+
+     
     },
     created() {
         

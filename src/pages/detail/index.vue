@@ -9,6 +9,7 @@
 />
         <ul>
             <li v-if="product">
+              
                 <h1><img :src="product.coverImg" alt=""></h1>
                 <div class="wrap">
                     <div class="price">                 
@@ -50,7 +51,7 @@
   :direction="direction"
   :before-close="handleClose">
   <van-card
-  :num="num"
+  :num="quantity"
   :price="product.price"
   :title="product.name"
   :thumb="product.coverImg"
@@ -69,12 +70,12 @@
                 </li>
                 
            </div>
- 
+          
  </ul>
  <div class="bk"></div>
  <div class="gou">
         <span>购买数量:</span> 
-        <el-input-number v-model="num" @change="handleChange" :min="1" :max="100" label="描述文字"></el-input-number>
+        <el-input-number v-model="quantity " @click="updatePro(iid,1) " @change="handleChange" :min="1" :max="100" label="描述文字"></el-input-number>
  </div>
  <div class="add">
      <van-goods-action>
@@ -82,7 +83,7 @@
   <van-goods-action-button
     type="danger"
     text="确认"
-    @click="onClickButton(product._id)"
+    @click="onClickButton(product._id)  "
   />
 </van-goods-action>
  </div>
@@ -95,6 +96,8 @@
 import {get,post} from '../../util/requiest'
 import { Toast } from 'vant';
 import {addToCart} from '../../api/cart'
+import { loadCartlist} from '../../api/cart'
+// import {isLogined} from '../../util/auth'
 // let pagenum = 1;
 
 export default {
@@ -102,6 +105,8 @@ export default {
     components: {},
     data() {
         return { 
+            quantity:0,
+            iid:'',
             menus: ["红色", "黑色", "白色", "灰色","蓝色","紫色"],
           currentIndex: -1, 
             num: 1,
@@ -119,16 +124,55 @@ export default {
     watch: {},
     
     methods: {
+         async  updatePro(id,num){
+        await addToCart(id,num)
+        //改变件数 要更新数据库,添加完数据后，把list数据进行更新
+       
+        //   if(this.product._id==id){
+              
+            this.product.quantity+=num
+            // console.log(this.product.quantity);
+            // console.log(num);
+        //   }
+        
+        },
+        async getcartlist(){
+         this.num=localStorage.getItem("num")
+            const result=await loadCartlist()
+            console.log(result.data);
+            this.list=result.data
+            this.id1={...result.data}
+
+            // console.log(this.id1[0]._id);
+            this.id=this.id1[0]._id
+            // this.num=result.data.quantity
+        },
         //添加购物车
+        //  getaddnum(){
+        //      console.log(this.quantity);
+        //      localStorage.setItem("num",this.quantity)
+        //  },
     async   onClickButton(id) {
-      const result=await addToCart(id)
+        const isLogined = localStorage.getItem("token") || "";
+        if(!isLogined){
+            Toast.success('请先登陆')
+            this.$router.push({               
+                path:"/login",
+            })
+        }else{
+            
+              const result=await addToCart(id)       
+            if(result.data.code==='success'){
+                Toast.success('添加成功，在购物车等亲~')
+                // this.$router.push('/cart')           
+                }
+        }
       
-      if(result.data.code==='success'){
-          Toast.success('添加成功，在购物车等亲~')
-          this.$router.push('/cart')
-      }
-      console.log(result);
+     
+      
+    //   console.log(result);
     },
+    //选项卡
         changeIndex(idx) {
             this.currentIndex = idx;
           },
@@ -136,8 +180,8 @@ export default {
         // select(o){
         //     console.log(o);
         // },
-     handleChange(value) {
-        console.log(value);
+     handleChange() {
+        // console.log(value);
       },
         handleClose(done) {
     //   Toast('添加购物车成功')
@@ -161,24 +205,30 @@ export default {
         const result=await  get('/api/v1/products/'+id)
         console.log(result.data);
         this.product=result.data
+        this.quantity=result.data.quantity
+        this.iid=result.data._id
         },
-        chenge(idx){
-            console.log(idx);
+        chenge(){
+            // console.log(idx);
         },
        async addCart(){
            //添加到购物车
             const result=await post('/api/v1/shop_carts',{
-                product:this.id,
-                quantity:2
+                product:"this.id",
+                quantity:this.quantity
             })
             console.log(result);
         },
         
 },
     created() {
+       
+        // this. addCart()
         //获取传过来得id
         this.id=this.$route.params.id
         this.init(this.id)
+        // this.getaddnum()
+        this.getcartlist()
     },
     mounted() {
         

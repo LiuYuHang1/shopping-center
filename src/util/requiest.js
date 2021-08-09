@@ -11,7 +11,7 @@ instance.interceptors.request.use(
   function(config) {
     //在请求拦截里面统一设置header头
     if (getToken()) {
-      config.headers.authorization = "Bearer " + getToken();
+      config.headers.authorization = "Bearer " + getToken(); //相当于令牌
     }
     return config;
   },
@@ -19,7 +19,7 @@ instance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-//全局相应拦截
+//全局响应拦截
 instance.interceptors.response.use(
   function(response) {
     return response;
@@ -30,7 +30,7 @@ instance.interceptors.response.use(
 );
 export const get = (url, params) => instance.get(url, { params });
 
-//封装posti请求
+//封装post请求
 export const post = (url, data) => instance.post(url, data);
 //删除
 export const dele = (url, params) => instance.delete(url, { params });

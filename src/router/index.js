@@ -21,6 +21,14 @@ const router = new VueRouter({
       },
     },
     {
+      path: "/order",
+      component: () => import("../pages/order"),
+
+      meta: {
+        footShow: false,
+      },
+    },
+    {
       path: "/shop",
       component: () => import("../pages/shop"),
       meta: {

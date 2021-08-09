@@ -36,6 +36,7 @@
 
 <script>
 import { loadCartlist,addToCart,delpro,delspro} from '../../api/cart'
+import {addorder} from '../../api/order'
 export default {
     
     components: {},
@@ -44,6 +45,8 @@ export default {
         return {
             ids:[],
             list:[],
+            
+            
 
         };
     },
@@ -53,11 +56,10 @@ export default {
           //全选 如果flag为true 则按钮全为true否则亦然/有个bug 这个item.checked刚开始是没有的 如果先点击全选的话 会出bug
           // return  this.list.forEach(item =>(item.checked=flag));
           //动态添加属性，这个是直接添加好的，不是点击触发才添加的
-          return this.list.map((item)=>this.$set(item,"checked",flag))&& (this.ids.length!=0)
+          return this.list.map((item)=>this.$set(item,"checked",flag))
         },
         get(){
-          // 如果购物车的总长度等于已选的总长度的话
-         
+          // 如果购物车的总长度等于已选的总长度的话       
           return this.list.length===this.list.filter(item=>item.checked==true).length 
         },
        
@@ -69,7 +71,29 @@ export default {
         }).reduce(function(per,cur){
           return per+cur.product.price*cur.quantity//商品价格*购物车该商品的数量
         },0)
-      }
+      },
+        //获取选中的购物车列表
+        selctgoods(){
+          var selectlist=[]
+          this.list.forEach((item)=>{
+            if(item.checked){
+              selectlist.push(
+                {
+                  quantity :item.quantity, 
+                  product :item._id,
+                  price :item.product.price   
+                }
+              )
+             
+              
+            }
+          })
+           function unique(selectlist) {
+                return [...new Set(selectlist)];
+              }
+          var arr=unique(selectlist)
+        return arr;
+        },
     },
     watch: {
      
@@ -78,12 +102,13 @@ export default {
     methods: {
         //获取购物车列表
         async getcartlist(){
+         this.num=localStorage.getItem("num")
             const result=await loadCartlist()
             console.log(result);
             this.list=result.data
             // this.num=result.data.quantity
         },
-        //+++
+        //+++添加件数
       async  updatePro(id,num){
         await addToCart(id,num)
         //改变件数 要更新数据库,添加完数据后，把list数据进行更新
@@ -93,16 +118,38 @@ export default {
           }
         });
         },
-        onSubmit(){},
+      
+        //提交订单
+        async onSubmit(){
+          // console.log(
+          //   this.selctgoods
+          // );
+         const result=await  addorder({
+           //先判断有没有收货人，如果没有就跳转至新增收货人页面
+          receiver :"xxx" ,   
+          regions:"高新区" ,
+          address :  "公园茂",
+          orderDetails:this.selctgoods,
+         
+          })
+          console.log(result);
+           this.$router.push('/order')
+        },
+        //删除单个购物车
         async del(id){
           const result=await delpro(id)
           console.log(result);
           //删除成功 重新调用一下购物车列表
           await this.getcartlist()
         },
+        //生成ids
         check(){
            this.ids= this.list.filter(item=>item.checked==true)
+          //  if(this.ids.length==0){
+          //     this.checked=false
+          //  }
         },
+        //删除多个购物车
          async dels(ids){
         
           console.log(ids);
