@@ -144,7 +144,7 @@ export default {
             this.id1={...result.data}
 
             // console.log(this.id1[0]._id);
-            this.id=this.id1[0]._id
+            // this.id=this.id1[0]._id
             // this.num=result.data.quantity
         },
         //添加购物车
@@ -164,7 +164,7 @@ export default {
               const result=await addToCart(id)       
             if(result.data.code==='success'){
                 Toast.success('添加成功，在购物车等亲~')
-                // this.$router.push('/cart')           
+                this.$router.push('/cart')           
                 }
         }
       

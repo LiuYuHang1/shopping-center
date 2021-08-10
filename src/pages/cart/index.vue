@@ -37,6 +37,7 @@
 <script>
 import { loadCartlist,addToCart,delpro,delspro} from '../../api/cart'
 import {addorder} from '../../api/order'
+import { Toast } from 'vant';
 export default {
     
     components: {},
@@ -45,7 +46,7 @@ export default {
         return {
             ids:[],
             list:[],
-            
+            orderDetails:[]
             
 
         };
@@ -81,17 +82,19 @@ export default {
                 {
                   quantity :item.quantity, 
                   product :item._id,
-                  price :item.product.price   
+                  price :item.product.price,
+                  img:item.product.coverImg   
                 }
               )
-             
-              
+                  
             }
           })
+           
            function unique(selectlist) {
                 return [...new Set(selectlist)];
               }
           var arr=unique(selectlist)
+          
         return arr;
         },
     },
@@ -102,7 +105,7 @@ export default {
     methods: {
         //获取购物车列表
         async getcartlist(){
-         this.num=localStorage.getItem("num")
+        //  this.num=localStorage.getItem("num")
             const result=await loadCartlist()
             console.log(result);
             this.list=result.data
@@ -124,6 +127,7 @@ export default {
           // console.log(
           //   this.selctgoods
           // );
+         
          const result=await  addorder({
            //先判断有没有收货人，如果没有就跳转至新增收货人页面
           receiver :"xxx" ,   
@@ -133,7 +137,11 @@ export default {
          
           })
           console.log(result);
-           this.$router.push('/order')
+          this.orderDetails= this.selctgoods
+          console.log(this.orderDetails);
+          localStorage.setItem("orders",JSON.stringify(this.orderDetails))
+           Toast.success('支付成功')       
+           this.$router.push('/order/')
         },
         //删除单个购物车
         async del(id){
@@ -161,6 +169,7 @@ export default {
     created() {
         this.getcartlist()
         // this.num=this.list.quantity
+        // this.orderDetails=this.selctgoods
         
          
     },

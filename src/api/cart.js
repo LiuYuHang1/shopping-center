@@ -8,7 +8,6 @@ export const addToCart = (product, num = 1) =>
 export const loadCartlist = () => get("/api/v1/shop_carts");
 
 //删除购物车
-
 export const delpro = (id) => dele("/api/v1/shop_carts/" + id);
 //删除多个购车记录
 export const delspro = (ids) =>
