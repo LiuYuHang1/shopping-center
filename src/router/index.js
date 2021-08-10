@@ -23,7 +23,6 @@ const router = new VueRouter({
     {
       path: "/order",
       component: () => import("../pages/order"),
-
       meta: {
         footShow: false,
       },
@@ -80,6 +79,13 @@ const router = new VueRouter({
     {
       path: "/detail/:id",
       component: () => import("../pages/detail"),
+      meta: {
+        footShow: false,
+      },
+    },
+    {
+      path: "/orderDetail/:id",
+      component: () => import("../pages/orderDetail"),
       meta: {
         footShow: false,
       },

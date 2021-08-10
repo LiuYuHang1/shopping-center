@@ -14,7 +14,7 @@
   
 >
  <template #left>
-    <div > <span style="font-size:14px;margin-right:8px;" left-arrow @click="$router.push('/home')">&lt;返回</span>
+    <div > <span style="font-size:14px;margin-right:8px;" left-arrow @click="$router.push('/home')">&lt;主页</span>
        </div>
  
 
@@ -23,27 +23,38 @@
     <div  >搜索</div>
   </template>
 </van-search>
-  <ul  v-for="item in orders " :key="item._id" >
-      <li >
+
+  <ul   v-for="item in orders " :key="item._id" >
+      <li>
+     <van-checkbox v-model="item.checked"></van-checkbox>
+        <div>
         <h1>
           <span>id:{{item._id|format}}</span>
           <span>{{item.createdAt|formatTime}}</span>
         </h1>
         <h2>
           <span>总价：￥{{item.price}}</span>
-          <button>订单详情</button>
+          <button @click="goDetail(item._id)">订单详情</button>
           <button @click="del(item._id)">删除订单</button>
          
         </h2>
+        </div>
 
      </li>
+     <div class="grey"></div>
 </ul>
+<div class="bk"></div>
+  <div class="footer">
+   <van-checkbox v-model="checked" @click="check">全选</van-checkbox>
+   <div class="blank"></div>
+   <van-button  type="primary" @click="dels(ids)">删除</van-button>
+  </div>
     </div>
 </template>
 
 <script>
 
-import {getOrders,getOrderdetail} from '../../api/order'
+import {getOrders,getOrderdetail,delorders} from '../../api/order'
 // import { Toast } from 'vant';
 export default {   
     components: {},
@@ -53,11 +64,27 @@ export default {
             value:"",
             orders:[],  
             keywords: "",
-            orderss:[]          
+            orderss:[] ,          
+            ids:[],      
         }
     },
-    computed: {},
-    watch: {},
+    computed: {
+       checked:{
+        set(flag){
+          //全选 如果flag为true 则按钮全为true否则亦然/有个bug 这个item.checked刚开始是没有的 如果先点击全选的话 会出bug
+          // return  this.list.forEach(item =>(item.checked=flag));
+          //动态添加属性，这个是直接添加好的，不是点击触发才添加的
+          return this.orders.map((item)=>this.$set(item,"checked",flag))
+        },
+        get(){
+          // 如果购物车的总长度等于已选的总长度的话       
+          return this.orders.length===this.orders.filter(item=>item.checked==true).length 
+        },              
+      },      
+    },
+    watch: {
+     
+    },
     
     methods: {
         async init(){
@@ -84,26 +111,50 @@ export default {
             console.log(result);
             this.init()
         },
-       
-        
+      //生成ids
+        check(){
+           this.ids= this.orders.filter(item=>item.checked==true)         
+        },
+        //删除多个订单
+         async dels(ids){       
+          console.log(ids);
+          await delorders(ids)
+          await this.init()
+        },
+        goDetail(id){
+              this.$router.push('/orderDetail/'+id)
+          }
     },
-    created() {
-      
-       
+    created() {         
         this.init()
     },
-    mounted() {
-        
+    mounted() {        
     },
     }
 </script>
 <style scoped>
+.order{
+  background: #fff;
+}
+  ul{
+    padding:.1rem;
+    box-sizing: content-box;
+  }
+  ul .grey{
+    width: 100%;
+    height: .1rem;
+    background: #ccc;
+  }
     ul li{
-      /* margin-bottom: .1rem; */
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: .1rem;
       width: 97%;
-      height: 1.4rem;
+      /* height: 1.4rem; */
       padding: .1rem;
-      border: 0.01rem solid;
+      /* border: 0.001rem solid; */
+    background: #fff;
 
     }
     ul li h1{
@@ -117,4 +168,34 @@ export default {
       display: flex;
       justify-content: space-between;
     }
+    .footer{
+      width: 100%;
+      height: .8rem;
+      position: fixed;
+      bottom: 0;
+      display: flex;
+      justify-content: space-between;
+      background: #fff;
+    }
+    .footer .blank{
+     width: 60px;
+      height: .8rem;
+    }
+    .bk{
+       
+      height: 2rem;
+      }
+      ul li h2 button{
+        width: 1.6rem;
+        font-size: .14rem;
+        margin-left: .2rem;
+      }
+      ul li h2 span{
+        display: inline-block;
+        width: 2.5rem;
+        font-size: .14rem;
+      }
+      ul li h1{
+         font-size: .14rem;
+      }
 </style>
