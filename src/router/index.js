@@ -70,10 +70,32 @@ const router = new VueRouter({
       },
     },
     {
+      path: "/user",
+      component: () => import("../pages/user"),
+      meta: {
+        footShow: false,
+      },
+    },
+    {
+      path: "/updateuser",
+      component: () => import("../pages/updateuser"),
+      meta: {
+        footShow: false,
+      },
+    },
+
+    {
       path: "/profile",
       component: () => import("../pages/profile"),
       meta: {
         footShow: true,
+      },
+    },
+    {
+      path: "/address",
+      component: () => import("../pages/address"),
+      meta: {
+        footShow: false,
       },
     },
     {
@@ -83,6 +105,7 @@ const router = new VueRouter({
         footShow: false,
       },
     },
+
     {
       path: "/orderDetail/:id",
       component: () => import("../pages/orderDetail"),

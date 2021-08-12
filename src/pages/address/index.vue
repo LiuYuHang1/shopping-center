@@ -1,8 +1,13 @@
 <template>
-    <div class='user'><van-cell-group>
-  <van-cell title="修改用户信息" value="内容" />
-  <van-cell title="查看积分" value="内容"  />
-</van-cell-group></div>
+    <div class='address'>
+        <van-nav-bar
+  title="我的收货地址"
+  left-text="返回"
+  left-arrow
+  @click-left="$router.back(-1)"
+  @click-right="$router.back(1)"
+/>
+    </div>
 </template>
 
 <script>
@@ -28,6 +33,7 @@ export default {
         
     },
     }
+//<style scoped src=''>
 </script>
 <style scoped>
     

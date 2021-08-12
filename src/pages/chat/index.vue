@@ -132,6 +132,9 @@ padding-bottom: 40px;
         font-size: 14px;
         color: #ccc;
     }
+    .chat .wrap ul li .div h2{
+        font-size: 16px;
+    }
     .wk{
         width: 100%;
         display: flex;

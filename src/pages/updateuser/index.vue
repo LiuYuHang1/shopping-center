@@ -1,39 +1,46 @@
 <template>
-    <div class='register'>
-       <van-nav-bar
-  title="注册"
-  left-text="返回"
-  left-arrow
-  @click-left="$router.push('/home')"
-  @click-right="$router.back(1)"
-/>
-      
-      <div class="blank">
+    <div class='updateuser'>
+        <van-nav-bar
+        title="编辑资料"
+        left-text="返回"
+        left-arrow
+        @click-left="$router.back(-1)"
+        @click-right="$router.back(1)"
+        />
+        <div class="blank">
         <div class="bb"></div>
       <van-uploader v-model="fileList" 
       :deletable="false"
       :max-count="1"
       :after-read="afterRead" 
-      upload-text=上传头像
+      upload-text=修改头像
       />
     </div>
       
        <!-- <input type="file" @change="update" /> <br /> -->
         <!-- <img :src="imgUrl" width="50%" alt=""> -->
         <van-form @submit="onSubmit">
-  <van-field
+  <!-- <van-field
     v-model="username"
     name="userName"
     label="用户名"
     placeholder="用户名"
     :rules="[{ required: true, message: '请填写用户名' }]"
+  /> -->
+  <van-field
+    v-model="oldPassword"
+    type="password"
+    name="oldPassword"
+    label="原始密码"
+    placeholder="原始密码"
+    :rules="[{ required: true, message: '请填写密码' }]"
   />
   <van-field
     v-model="password"
     type="password"
     name="password"
-    label="密码"
-    placeholder="密码"
+    label="新密码"
+    placeholder="新密码"
     :rules="[{ required: true, message: '请填写密码' }]"
   />
    <van-field
@@ -45,58 +52,62 @@
     :rules="[{ required: true, message: '请填写昵称' }]"
   />
   <div style="margin: 16px;">
-    <van-button round block type="info" native-type="submit">提交</van-button>
+    <van-button round block type="info" native-type="submit">确定</van-button>
   </div>
 </van-form>
-<p @click="$router.push('/login')"><u>已注册？立即登录</u></p>
-
     </div>
 </template>
 
 <script>
-
-// import { Toast } from 'vant';//是个方法不是组件
+import {updatepassword,updateinfo} from '../../api/user'
 import {post} from '../../util/requiest'
-import {regApi} from '../../api/user'
-export default {
-    
+// import {regApi} from '../../api/user'
+export default {   
     components: {},
-    data() {
-        
+    data() {      
         return {
-          fileList: [],
+            fileList: [],
             username: '',
-            password: '',
+            password:"",
+            oldPassword: '',
             nickname:'',
             imgUrl:""
-    
         };
     },
     computed: {},
     watch: {},
     
     methods: {
-        //表单提交
-    async onSubmit(values) {
+       async onSubmit(values) {
+         
+      let passwod = {
+        // nickName: object.nickName,
+        oldPassword: values.oldPassword,
+        password: values.password,
+      };      
+      //修改密码
+     await  updatepassword(passwod)
+
+     let info=values.nickName
+     
       console.log('submit', values);
       //收集数据 发送请求
       if(this.imgUrl){
-        const result=await regApi({...values,avatar: this.imgUrl})
+          
+        const result=await updateinfo({nickName:info,avatar: this.imgUrl})
         console.log(result);
         if(result.data.code=='success'){
-            this.$toast('注册成功')
-            this.$router.push('/login')
+            this.$toast('修改用户信息成功')
+            this.$router.push('/profile')
+            // this.$router.push('/login')
         }else{
-            this.$toast('用户名已存在')
+            this.$toast('修改用户信息失败')
         }
       }else{
           this.$toast.fail('请上传头像');
       }    
     },
-    // update(){
-
-    // },
-     async afterRead(e) {
+       async afterRead(e) {
         let params = new FormData(); //创建formdata对象
       params.append("file", e.file);
          let config = {
@@ -118,8 +129,9 @@ export default {
         }
       }
     },
-
-     
+    // onSubmit(values) {
+    //   console.log('submit', values);
+    // },
     },
     created() {
         
@@ -128,15 +140,9 @@ export default {
         
     },
     }
+//<style scoped src=''>
 </script>
 <style scoped>
- p{
-      width: 120px;
-      margin: 0 auto;
-      margin-top: 30px;
-      font-size: 14px;  
-     color: blue;  
-    }
     .blank{
       margin-top: 40px;
       display: flex;

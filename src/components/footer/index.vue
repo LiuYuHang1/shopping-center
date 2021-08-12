@@ -1,31 +1,38 @@
 <template>
     <div class='footer'>
         <ul>
-            <li><router-link to="/home">
-             <span class="iconfont icon-home_icon
-"></span>
-            <span>首页</span>
-            </router-link></li>
-
-            <li><router-link to="/fenlei">
-             <span class="iconfont icon-leimupinleifenleileibie
-"></span>
-            <span>分类</span>           
-            </router-link></li>
- <li><router-link to="/chat">
-             <span class="iconfont icon-kefu"></span>
-            <span>消息</span>                           
-            </router-link></li>
+            <li>
+                <router-link to="/home">
+                <span class="iconfont icon-home_icon"></span>
+                <span>首页</span>
+                </router-link>
+            </li>
+            <li>
+                <router-link to="/fenlei">
+                <span class="iconfont icon-leimupinleifenleileibie"></span>
+                <span>分类</span>           
+                </router-link>
+            </li>
+            <li>
+                <router-link to="/chat">
+                <span class="iconfont icon-kefu"></span>
+                <span>消息</span>                           
+                </router-link>
+            </li>
            
-            <li><router-link to="/cart">
-            <span class="iconfont icon-gouwuche"></span>
-            <span>购物车</span>                     
-            </router-link></li>
+            <li>
+                <router-link to="/cart">
+                <span class="iconfont icon-gouwuche"></span>
+                <span>购物车</span>                     
+                </router-link>
+            </li>
 
-            <li><router-link to="/profile">
-             <span class="iconfont icon-wode"></span>
-            <span>我的</span>                           
-            </router-link></li>
+            <li>
+                <router-link to="/profile">
+                <span class="iconfont icon-wode"></span>
+                <span>我的</span>                           
+                </router-link>
+            </li>
            
         </ul>
     </div>

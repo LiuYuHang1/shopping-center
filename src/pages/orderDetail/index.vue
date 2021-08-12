@@ -3,10 +3,14 @@
          <van-nav-bar
   title="订单详情"
   left-text="返回"
+  @click-right="$router.push('/home')"
   left-arrow
-  @click-left="$router.back(-1)"
-  
-/>
+  @click-left="$router.back(-1)" 
+>
+<template #right>
+    <van-icon size="22px" name="wap-home-o" />
+  </template>
+</van-nav-bar>
 <van-cell-group  v-if="detail">
   <van-cell title="收货人" :value="detail.receiver" />
   <van-cell title="地址" :value="detail.address" />

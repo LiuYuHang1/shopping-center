@@ -21,7 +21,10 @@
                    <van-tag plain type="primary">优惠</van-tag>：
                     <span id="pp">领卷立减{{ parseInt(product.price*0.01)}}元</span>
                   
-                    <p @click="change(index)">{{product.name}}<van-tag type="success">退货包运费</van-tag></p>
+                    <p class="ppp"     @click="change(index)">{{product.name}}<van-tag type="success">退货包运费</van-tag>
+                    
+                    </p>
+                    
                     <div class="hao" style="margin-top:10px;">
                         <van-tag color="#fff" text-color="#ccc">全场包邮</van-tag>·
                         <van-tag color="#fff" text-color="#ccc">7天无理由退货</van-tag>·
@@ -46,7 +49,7 @@
         <!-- </el-radio-group> -->
  <el-drawer
  size="85%"
-  title="商品信息"
+  
   :visible.sync="drawer"
   :direction="direction"
   :before-close="handleClose">
@@ -118,6 +121,21 @@ export default {
             text:"收藏",
              drawer: false,
             direction: 'btt',
+            showShare: false,
+      options: [
+        [
+          { name: '微信', icon: 'wechat' },
+          { name: '朋友圈', icon: 'wechat-moments' },
+          { name: '微博', icon: 'weibo' },
+          { name: 'QQ', icon: 'qq' },
+        ],
+        [
+          { name: '复制链接', icon: 'link' },
+          { name: '分享海报', icon: 'poster' },
+          { name: '二维码', icon: 'qrcode' },
+          { name: '小程序码', icon: 'weapp-qrcode' },
+        ],
+      ],
         }
     },
     computed: {},
@@ -236,6 +254,11 @@ export default {
     }
 </script>
 <style scoped>
+.ppp{
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: space-between;
+}
 .uu .tg li{
     width: 20%;
     height: 40px;
@@ -245,6 +268,10 @@ export default {
     border-radius: 10%;
     float: left;
     margin: 10px 5px;
+    font-size: 16px;
+}
+.uu span{
+    font-size: 20px;
 }
 .active{
     color: #fff;
@@ -258,6 +285,9 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+.gou span{
+    font-size: 16px;
 }
 
 .uu {

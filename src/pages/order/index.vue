@@ -4,6 +4,7 @@
        >
  
 </van-nav-bar> -->
+
 <van-search
   v-model=" keywords"
   show-action
@@ -14,19 +15,18 @@
   
 >
  <template #left>
-    <div > <span style="font-size:14px;margin-right:8px;" left-arrow @click="$router.push('/home')">&lt;主页</span>
+    <div > <span style="font-size:14px;margin-right:8px;" left-arrow @click="$router.push('/home')"><van-icon size="26px" name="wap-home-o" /></span>
        </div>
- 
-
   </template>
   <template #action>
     <div  >搜索</div>
   </template>
 </van-search>
 
+
   <ul   v-for="item in orders " :key="item._id" >
-      <li>
-     <van-checkbox v-model="item.checked"></van-checkbox>
+      <li >
+     <van-checkbox v-model="item.checked" @click="dde"></van-checkbox>
         <div>
         <h1>
           <span>id:{{item._id|format}}</span>
@@ -45,9 +45,11 @@
 </ul>
 <div class="bk"></div>
   <div class="footer">
-   <van-checkbox v-model="checked" @click="check">全选</van-checkbox>
+    <div class="kl">
+      <van-checkbox v-model="checked" @click="check" ></van-checkbox> <span>全选</span>
+    </div>
    <div class="blank"></div>
-   <van-button  type="primary" @click="dels(ids)">删除</van-button>
+   <button  @click="dels(ids)">删除</button>
   </div>
     </div>
 </template>
@@ -65,7 +67,8 @@ export default {
             orders:[],  
             keywords: "",
             orderss:[] ,          
-            ids:[],      
+            ids:[], 
+                 
         }
     },
     computed: {
@@ -115,6 +118,9 @@ export default {
         check(){
            this.ids= this.orders.filter(item=>item.checked==true)         
         },
+        dde(){
+           this.ids= this.orders.filter(item=>item.checked==true) 
+        },
         //删除多个订单
          async dels(ids){       
           console.log(ids);
@@ -123,7 +129,8 @@ export default {
         },
         goDetail(id){
               this.$router.push('/orderDetail/'+id)
-          }
+          },
+       
     },
     created() {         
         this.init()
@@ -133,6 +140,7 @@ export default {
     }
 </script>
 <style scoped>
+
 .order{
   background: #fff;
 }
@@ -146,16 +154,18 @@ export default {
     background: #ccc;
   }
     ul li{
+     
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: .1rem;
-      width: 97%;
+      width: 100%;
       /* height: 1.4rem; */
       padding: .1rem;
       /* border: 0.001rem solid; */
+      box-sizing: border-box;
     background: #fff;
-
+ /* background: #FFF8E1; */
     }
     ul li h1{
       width: 95%;
@@ -172,21 +182,36 @@ export default {
       width: 100%;
       height: .8rem;
       position: fixed;
-      bottom: 0;
+      bottom: 10px;
       display: flex;
-      justify-content: space-between;
+      
       background: #fff;
     }
     .footer .blank{
-     width: 60px;
+     width: 57%;
       height: .8rem;
     }
-    .bk{
-       
+    .footer .kl{
+      margin-left: 10px;
+      width: 16%;
+      display: flex;
+      font-size: 16px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer button{
+      width: 20%;
+      height: 30px;
+      font-size: 16px;
+      text-align: center;
+      line-height: 30px;
+    }
+    .bk{      
       height: 2rem;
       }
       ul li h2 button{
-        width: 1.6rem;
+        width: 90px;
+        height: 26px;
         font-size: .14rem;
         margin-left: .2rem;
       }

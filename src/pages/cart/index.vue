@@ -3,14 +3,20 @@
         <van-nav-bar
   title="购物车"
   left-text="返回"
+  right-text="主页"
   left-arrow
   @click-left="$router.back(-2)"
-  @click-right="$router.back(1)"
-/>
+  @click-right="$router.push('/home')"
+>
+<template #right>
+    <van-icon size="22px" name="wap-home-o" />
+  </template>
+</van-nav-bar>
 <ul v-for="(item,index ) in list" :key="item._id+index">
     <!-- item.checcked是自己添加的 -->
+    
   <van-checkbox v-model="item.checked" ></van-checkbox>
-    <li >
+    <li @click="dds">
       
         <van-card
   :num="item.quantity"
@@ -157,6 +163,9 @@ export default {
           //     this.checked=false
           //  }
         },
+        dds(){
+          this.ids= this.list.filter(item=>item.checked==true)
+        },
         //删除多个购物车
          async dels(ids){
         
@@ -178,6 +187,8 @@ export default {
     },
     }
 </script>
+
+
 <style scoped>
     ul li{
        width: 90%;

@@ -269,9 +269,10 @@ export default {
     }
     .home ul li{
         display: flex;
-        margin: .1rem 0;
+        margin: .2rem 0;
     }
     .name{ 
+        font-size: 15px !important;
         line-height: .4rem;       
         display: block;
         width:100%;      
@@ -366,7 +367,7 @@ export default {
     }
     .nav #ul li{        
         height: 30px;
-        
+        font-size: 16px;
     }
     .on{
          /* height: 20px; */
