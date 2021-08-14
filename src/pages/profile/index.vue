@@ -17,8 +17,10 @@
                 </li>
                 <div class="dd">
                     <span  @click="$router.push('/register')">注册/</span>    
-                    <span  @click="$router.push('/login')">登陆</span>    
+                    <span  @click="$router.push('/login')">登陆</span> 
+                      
                 </div>  
+               
             </ul>
             
         </div>  
@@ -50,7 +52,7 @@
             <span><van-icon name="goods-collect" color="#f7a539" /><dd>人气排行</dd></span>                  
         </div> 
       <div class="orders3">         
-            <span><van-icon name="location-o" color="red"  @click="$router.push('/address')"/><dd>收货地址</dd></span>
+            <span><van-icon name="location-o" color="red"  @click="$router.push('/addresslist')"/><dd>收货地址</dd></span>
             <span><van-icon name="calendar-o" color="red"/><dd>红包卡券</dd></span>
             <span><van-icon name="fire-o" color="red" /><dd>活力中心</dd></span>
             <span><van-icon name="bar-chart-o" color="red"/><dd>成就排行</dd></span>                  

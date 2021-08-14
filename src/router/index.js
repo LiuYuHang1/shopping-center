@@ -21,6 +21,27 @@ const router = new VueRouter({
       },
     },
     {
+      path: "/addressdetail/:id",
+      component: () => import("../pages/addressdetail"),
+      meta: {
+        footShow: false,
+      },
+    },
+    {
+      path: "/adresList",
+      component: () => import("../pages/adresList"),
+      meta: {
+        footShow: false,
+      },
+    },
+    {
+      path: "/addresslist",
+      component: () => import("../pages/addresslist"),
+      meta: {
+        footShow: false,
+      },
+    },
+    {
       path: "/order",
       component: () => import("../pages/order"),
       meta: {
@@ -89,6 +110,13 @@ const router = new VueRouter({
       component: () => import("../pages/profile"),
       meta: {
         footShow: true,
+      },
+    },
+    {
+      path: "/updateaddress/:id",
+      component: () => import("../pages/updateaddress"),
+      meta: {
+        footShow: false,
       },
     },
     {

@@ -42,11 +42,15 @@
             <van-collapse-item title="更新时间" name="5">{{usersdata.updatedAt}}</van-collapse-item>
             <van-collapse-item title="用户编号" name="6">{{usersdata._id}}</van-collapse-item>
         </van-collapse> 
-       
+        <div class="btn">
+             <van-button  @click="back" type="primary" color="red" size="large">退出登陆</van-button>
+        </div>
+      
     </div>
 </template>
 <script>
 import {userdata} from '../../api/user'
+import {removeToken} from '../../util/auth'
 export default {
     
     components: {},
@@ -65,6 +69,10 @@ export default {
         let result=await userdata()
         console.log(result);
         this.usersdata=result.data
+        },
+        back(){
+            removeToken();
+            this.$router.push('/profile')
         }
     },
     created() {
@@ -76,6 +84,11 @@ export default {
     }
 </script>
 <style scoped>
+.btn{
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
     .ava{
         width: 100%;
         height: 100px;

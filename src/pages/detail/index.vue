@@ -171,14 +171,14 @@ export default {
         //      localStorage.setItem("num",this.quantity)
         //  },
     async   onClickButton(id) {
-        const isLogined = localStorage.getItem("token") || "";
+        const isLogined = await localStorage.getItem("token") || "";
         if(!isLogined){
             Toast.success('请先登陆')
             this.$router.push({               
                 path:"/login",
             })
         }else{
-            
+            // console.log(id);
               const result=await addToCart(id)       
             if(result.data.code==='success'){
                 Toast.success('添加成功，在购物车等亲~')
